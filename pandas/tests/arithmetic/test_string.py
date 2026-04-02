@@ -481,3 +481,16 @@ def test_comparison_methods_list(comparison_op, any_string_dtype, box, request):
             # if GH#62766 is addressed this check can be removed
             expected = tm.box_expected(expected, box)
         tm.assert_equal(result, expected)
+
+
+def test_string_add_missing_values(any_string_dtype):
+    # GH#64968 Arrow-backed str arrays should return NA when added to missing
+    arr = pd.array(["y"], dtype=any_string_dtype)
+    for na_val in [None, np.nan, pd.NA]:
+        # left side
+        result = arr + na_val
+        expected = pd.array([pd.NA], dtype=any_string_dtype)
+        tm.assert_extension_array_equal(result, expected)
+        # right side
+        result = na_val + arr
+        tm.assert_extension_array_equal(result, expected)
