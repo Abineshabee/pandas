@@ -20,6 +20,10 @@ Fixed regressions
 Bug fixes
 ~~~~~~~~~
 
+- Bug in :class:`ArrowStringArray` where adding missing values (e.g. :attr:`NA`)
+  did not correctly propagate NA, sometimes raising ``TypeError`` or returning
+  incorrect values (:issue:`64968`)
+
 .. ---------------------------------------------------------------------------
 .. _whatsnew_303.contributors:
 
