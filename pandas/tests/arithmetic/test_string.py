@@ -485,6 +485,8 @@ def test_comparison_methods_list(comparison_op, any_string_dtype, box, request):
 
 def test_string_add_missing_values(any_string_dtype):
     # GH#64968 Arrow-backed str arrays should return NA when added to missing
+    if any_string_dtype == object:
+        pytest.skip("object dtype does not support NA propagation for string add")
     arr = pd.array(["y"], dtype=any_string_dtype)
     for na_val in [None, np.nan, NA]:
         # left side
